@@ -1,0 +1,38 @@
+{
+  "@context": [
+    "https://doi.org/10.5063/schema/codemeta-2.0",
+    {
+      "hermes": "https://software-metadata.pub/ns/hermes/"
+    }
+  ],
+  "@type": "SoftwareSourceCode",
+  "author": [
+    {
+      "@id": "https://orcid.org/0009-0001-8382-4923",
+      "@type": "Person",
+      "affiliation": {
+        "@type": "Organization",
+        "legalName": "FZJ"
+      },
+      "familyName": "Heeb",
+      "givenName": "Nitai-Prasad",
+      "email": "n.heeb@fz-juelich.de"
+    },
+    {
+      "@type": "Person",
+      "familyName": "Nothing",
+      "givenName": "Nobody"
+    }
+  ],
+  "datePublished": "2025-05-19",
+  "description": "This contains important salad related stuff.",
+  "keywords": [
+    "Fruit",
+    "Vegetable",
+    "Green"
+  ],
+  "license": "https://spdx.org/licenses/CC0-1.0",
+  "name": "The Salad",
+  "url": "https://www.example-salad.com",
+  "version": "1.0"
+}
