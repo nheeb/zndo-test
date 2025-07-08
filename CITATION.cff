@@ -2,12 +2,25 @@
 # Visit https://bit.ly/cffinit to generate yours today!
 
 cff-version: 1.2.0
-title: sdfsdfsdf
+title: The Salad
 message: >-
   If you use this software, please cite it using the
   metadata from this file.
 type: software
 authors:
-  - given-names: Nitai
+  - given-names: Nitai-Prasad
     family-names: Heeb
-license: CC-BY-1.0
+    email: n.heeb@fz-juelich.de
+    affiliation: FZJ
+    orcid: 'https://orcid.org/0009-0001-8382-4923'
+  - given-names: Nobody
+    family-names: Nothing
+url: 'https://www.example-salad.com'
+abstract: This contains important salad related stuff.
+keywords:
+  - Fruit
+  - Vegetable
+  - Green
+license: CC0-1.0
+version: '1.0'
+date-released: '2025-05-19'
