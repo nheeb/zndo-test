@@ -2,12 +2,22 @@
 # Visit https://bit.ly/cffinit to generate yours today!
 
 cff-version: 1.2.0
-title: sdfsdfsdf
-message: >-
-  If you use this software, please cite it using the
-  metadata from this file.
+title: The big recipe
+message: Very important recipe
 type: software
 authors:
-  - given-names: Nitai
+  - given-names: Nitai-P
     family-names: Heeb
-license: CC-BY-1.0
+    email: n.heeb@fz-juelich.de
+    orcid: 'https://orcid.org/0009-0001-8382-4923'
+    affiliation: FZJ
+  - given-names: Nobody
+    family-names: Noone
+    email: no@nothing.de
+abstract: Ingredients and more
+keywords:
+  - Recipe
+  - Test
+license: CC-BY-4.0
+version: '1.0'
+date-released: '2025-07-22'
