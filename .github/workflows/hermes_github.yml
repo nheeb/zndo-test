@@ -80,6 +80,8 @@ jobs:
             (Any temporary branches will be cleaned up.)
           delete-branch: true
       - run: ls -lisa
+      - run: ls -lisa .hermes/
+      - run: ls -lisa .hermes/curate/
       - uses: actions/upload-artifact@v4
         with:
           name: curation-files
