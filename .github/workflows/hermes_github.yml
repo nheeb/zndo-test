@@ -88,8 +88,8 @@ jobs:
           URL=$(echo "$RESPONSE" | jq -r ".artifacts[] | select(.name==\"$ARTIFACT_NAME\") | .archive_download_url")
           echo "ARTIFACT_URL=$URL" >> $GITHUB_ENV
           echo "Artifact-URL: $ARTIFACT_URL" > .hermes/.issue_content.md
-      env:
-        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - uses: peter-evans/create-issue-from-file@v5
         with:
           title: Curation Issue
