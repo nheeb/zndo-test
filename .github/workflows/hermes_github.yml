@@ -42,6 +42,7 @@ jobs:
     permissions:
       contents: write # Allow creation of new branches
       pull-requests: write # Postprocessing should be able to create a pull request with changes
+      issues: write # Allow issue creation
 
     steps:
       - uses: actions/checkout@v3
@@ -87,6 +88,7 @@ jobs:
           RESPONSE=$(gh api repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/artifacts)
           URL=$(echo "$RESPONSE" | jq -r ".artifacts[] | select(.name==\"$ARTIFACT_NAME\") | .archive_download_url")
           echo "ARTIFACT_URL=$URL" >> $GITHUB_ENV
+          echo "Artifact-URL: $ARTIFACT_URL"
           echo "Artifact-URL: $ARTIFACT_URL" > .hermes/.issue_content.md
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
