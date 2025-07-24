@@ -79,10 +79,11 @@ jobs:
             If you are satisfied with the result, you may merge this PR, which will trigger publication.
             (Any temporary branches will be cleaned up.)
           delete-branch: true
+      - run: ls
       - uses: actions/upload-artifact@v4
         with:
           name: curation-files
-          path: .hermes/curate/hermes.json
+          path: ./.hermes/curate/hermes.json
       - run: |
           ARTIFACT_NAME="curation-files"
           RESPONSE=$(gh api repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/artifacts)
