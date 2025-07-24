@@ -1,0 +1,37 @@
+{
+  "@context": [
+    "https://doi.org/10.5063/schema/codemeta-2.0",
+    {
+      "hermes": "https://software-metadata.pub/ns/hermes/"
+    }
+  ],
+  "@type": "SoftwareSourceCode",
+  "author": [
+    {
+      "@id": "https://orcid.org/0009-0001-8382-4923",
+      "@type": "Person",
+      "affiliation": {
+        "@type": "Organization",
+        "legalName": "FZJ"
+      },
+      "familyName": "Heeb",
+      "givenName": "Nitai-P",
+      "email": "n.heeb@fz-juelich.de"
+    },
+    {
+      "@type": "Person",
+      "familyName": "Noone",
+      "givenName": "Nobody",
+      "email": "no@nothing.de"
+    }
+  ],
+  "datePublished": "2025-07-22",
+  "description": "Ingredients and more",
+  "keywords": [
+    "Recipe",
+    "Test"
+  ],
+  "license": "https://spdx.org/licenses/CC-BY-4.0",
+  "name": "The big recipe",
+  "version": "1.0"
+}
