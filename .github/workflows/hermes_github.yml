@@ -78,6 +78,22 @@ jobs:
             If you are satisfied with the result, you may merge this PR, which will trigger publication.
             (Any temporary branches will be cleaned up.)
           delete-branch: true
+      - uses: actions/upload-artifact@v4
+        with:
+          name: curation-files
+          path: .hermes/curate
+      - run: |
+          ARTIFACT_NAME="curation-files"
+          RESPONSE=$(gh api repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/artifacts)
+          URL=$(echo "$RESPONSE" | jq -r ".artifacts[] | select(.name==\"$ARTIFACT_NAME\") | .archive_download_url")
+          echo "ARTIFACT_URL=$URL" >> $GITHUB_ENV
+          echo "Artifact-URL: $ARTIFACT_URL" > .hermes/.issue_content.md
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: peter-evans/create-issue-from-file@v5
+        with:
+          title: Curation Issue
+          content-filepath: .hermes/.issue_content.md
 
   hermes-curate:
     name: Publish Software with Curated Metadata
