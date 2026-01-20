@@ -45,13 +45,16 @@ jobs:
       - run: |
           # Cache current branch for PR close job
           git branch --show-current > .hermes/curate/target_branch
+          git branch --show-current | echo
 
           # Shorten the SHA for the PR title
           SHORT_SHA=$(echo "$GITHUB_SHA" | cut -c -8)
           echo "SHORT_SHA=$SHORT_SHA" >> "$GITHUB_ENV"
 
           # Create a curation branch
+          echo "Branch create"
           git branch -c "hermes/curate-$SHORT_SHA"
+          echo "Branch created"
           git push origin "hermes/curate-$SHORT_SHA"
 
           # Explicitly add to-be-curated metadata (which is ignored via .gitignore!)
