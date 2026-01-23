@@ -55,7 +55,7 @@ jobs:
           # Create a curation branch
           echo "Branch create"
           # git branch -c "hermes/curate-$SHORT_SHA"
-          git checkout -b ${{ github.ref }}
+          git checkout -b "hermes/curate-$SHORT_SHA" ${{ github.ref }}
           echo "Branch created"
           git push origin "hermes/curate-$SHORT_SHA"
 
