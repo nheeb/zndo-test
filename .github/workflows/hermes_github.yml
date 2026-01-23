@@ -101,6 +101,7 @@ jobs:
       # Create pull request to include the post-processing results
       - run: echo "TARGET_BRANCH=$(cat .hermes/curate/target_branch)" >> "$GITHUB_ENV"
       - uses: peter-evans/create-pull-request@v5
+        if: ${{ env.TARGET_BRANCH != '' }}
         with:
           branch: hermes/post-${{ github.run_id }}
           base: ${{ env.TARGET_BRANCH }}
