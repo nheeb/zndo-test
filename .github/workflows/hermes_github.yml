@@ -45,18 +45,13 @@ jobs:
       - run: |
           # Cache current branch for PR close job
           git branch --show-current > .hermes/curate/target_branch
-          git branch --show-current | echo
-          echo ${{ github.ref }}
 
           # Shorten the SHA for the PR title
           SHORT_SHA=$(echo "$GITHUB_SHA" | cut -c -8)
           echo "SHORT_SHA=$SHORT_SHA" >> "$GITHUB_ENV"
 
           # Create a curation branch
-          echo "Branch create"
-          # git branch -c "hermes/curate-$SHORT_SHA"
           git checkout -b "hermes/curate-$SHORT_SHA" ${{ github.ref }}
-          echo "Branch created"
           git push origin "hermes/curate-$SHORT_SHA"
 
           # Explicitly add to-be-curated metadata (which is ignored via .gitignore!)
@@ -90,7 +85,7 @@ jobs:
 
 
       # Archive the artifacts that will be published
-      - run: git archive --format zip HEAD src > artifact.zip
+      - run: git archive --format zip HEAD - > artifact.zip
 
       # Run the HERMES deposition step
       - run: hermes deposit --initial -O invenio_rdm.auth_token ${{ secrets.ZENODO_SANDBOX_TOKEN }} --file artifact.zip --file README.md 
