@@ -46,6 +46,7 @@ jobs:
           # Cache current branch for PR close job
           git branch --show-current > .hermes/curate/target_branch
           git branch --show-current | echo
+          echo ${{ github.ref }}
 
           # Shorten the SHA for the PR title
           SHORT_SHA=$(echo "$GITHUB_SHA" | cut -c -8)
@@ -53,7 +54,8 @@ jobs:
 
           # Create a curation branch
           echo "Branch create"
-          git branch -c "hermes/curate-$SHORT_SHA"
+          # git branch -c "hermes/curate-$SHORT_SHA"
+          git checkout -b ${{ github.ref }}
           echo "Branch created"
           git push origin "hermes/curate-$SHORT_SHA"
 
