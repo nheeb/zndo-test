@@ -98,7 +98,7 @@ jobs:
       - run: echo "TARGET_BRANCH=$(cat .hermes/curate/target_branch)" >> "$GITHUB_ENV"
       # Take target_branch from tag ref if empty
       - run: |
-        if [ -z "${TARGET_BRANCH:-}" ]; then
+        if [ -z "$TARGET_BRANCH" ]; then
             if [ -s .hermes/curate/github_ref ]; then
                 REF="$(tr -d '\r\n' < .hermes/curate/github_ref)"
                 if [ "${REF#refs/tags/}" != "$REF" ]; then
