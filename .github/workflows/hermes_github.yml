@@ -85,21 +85,20 @@ jobs:
       - run: pip install hermes
 
 
-      # Archive the artifacts that will be published
-      - run: git archive --format zip HEAD - > artifact.zip
+      
 
       # Run the HERMES deposition step
-      - run: hermes deposit --initial -O invenio_rdm.auth_token ${{ secrets.ZENODO_SANDBOX_TOKEN }} --file artifact.zip --file README.md 
+      - run: hermes deposit --initial -O invenio_rdm.auth_token ${{ secrets.ZENODO_SANDBOX_TOKEN }}  --file README.md 
 
       # Run the HERMES postprocess step
       - run: hermes postprocess
 
-      # Create pull request to include the post-processing results
+      # Prepare pull request to include the post-processing results
       - run: echo "TARGET_BRANCH=$(cat .hermes/curate/target_branch)" >> "$GITHUB_ENV"
+
       # Take target_branch from tag ref if empty
       - run: |
-            # Check if empty
-            if [ -z "$TARGET_BRANCH" ]; then
+            if [ "$TARGET_BRANCH" == "" ]; then
                 if [ -s .hermes/curate/github_ref ]; then
                     REF="$(tr -d '\r\n' < .hermes/curate/github_ref)"
                     if [ "${REF#refs/tags/}" != "$REF" ]; then
@@ -116,6 +115,8 @@ jobs:
                     fi
                 fi
             fi
+
+      # Create the pull request
       - uses: peter-evans/create-pull-request@v5
         if: ${{ env.TARGET_BRANCH != '' }}
         with:
