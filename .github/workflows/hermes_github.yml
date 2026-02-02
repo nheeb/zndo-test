@@ -6,10 +6,10 @@
 name: Software Publication
 
 on:
-  # This trigger on branches being pushed starts the HERMES pipeline.
+  # This trigger on tags being pushed starts the HERMES pipeline.
   push:
-    branches:
-      - zenodo
+    tags:
+      - "*"
 
   # This trigger on closed pull requests is mandatory for the rest of the HERMES workflow.
   pull_request:
@@ -46,14 +46,13 @@ jobs:
           # Cache current branch for PR close job
           git branch --show-current > .hermes/curate/target_branch
           echo "${{ github.ref }}" > .hermes/curate/github_ref
-          echo "${{ github.ref }}"
 
           # Shorten the SHA for the PR title
           SHORT_SHA=$(echo "$GITHUB_SHA" | cut -c -8)
           echo "SHORT_SHA=$SHORT_SHA" >> "$GITHUB_ENV"
 
           # Create a curation branch
-          git branch -c "hermes/curate-$SHORT_SHA"
+          git checkout -b "hermes/curate-$SHORT_SHA" ${{ github.ref }}
           git push origin "hermes/curate-$SHORT_SHA"
 
           # Explicitly add to-be-curated metadata (which is ignored via .gitignore!)
@@ -97,6 +96,25 @@ jobs:
 
       # Create pull request to include the post-processing results
       - run: echo "TARGET_BRANCH=$(cat .hermes/curate/target_branch)" >> "$GITHUB_ENV"
+      # Take target_branch from tag ref if empty
+      - run: |
+        if [ -z "${TARGET_BRANCH:-}" ]; then
+            if [ -s .hermes/curate/github_ref ]; then
+                REF="$(tr -d '\r\n' < .hermes/curate/github_ref)"
+                if [ "${REF#refs/tags/}" != "$REF" ]; then
+                    TAG="${REF#refs/tags/}"
+                    if git fetch --force --tags origin; then
+                        if TAG_COMMIT="$(git rev-parse "${TAG}^{commit}" 2>/dev/null)"; then
+                            BRANCH_REF="$(git ls-remote --heads origin | awk -v sha="$TAG_COMMIT" '$1==sha {print $2; exit}')"
+                            if [ -n "$BRANCH_REF" ]; then
+                                BRANCH="${BRANCH_REF#refs/heads/}"
+                                echo "TARGET_BRANCH=$BRANCH" >> "$GITHUB_ENV"
+                            fi
+                        fi
+                    fi
+                fi
+            fi
+        fi
       - uses: peter-evans/create-pull-request@v5
         if: ${{ env.TARGET_BRANCH != '' }}
         with:
