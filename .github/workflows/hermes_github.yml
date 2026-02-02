@@ -6,10 +6,10 @@
 name: Software Publication
 
 on:
-  # This trigger on tags being pushed starts the HERMES pipeline.
+  # This trigger on branches being pushed starts the HERMES pipeline.
   push:
-    tags:
-      - "*"
+    branches:
+      - zenodo
 
   # This trigger on closed pull requests is mandatory for the rest of the HERMES workflow.
   pull_request:
@@ -45,13 +45,15 @@ jobs:
       - run: |
           # Cache current branch for PR close job
           git branch --show-current > .hermes/curate/target_branch
+          echo "${{ github.ref }}" > .hermes/curate/github_ref
+          echo "${{ github.ref }}"
 
           # Shorten the SHA for the PR title
           SHORT_SHA=$(echo "$GITHUB_SHA" | cut -c -8)
           echo "SHORT_SHA=$SHORT_SHA" >> "$GITHUB_ENV"
 
           # Create a curation branch
-          git checkout -b "hermes/curate-$SHORT_SHA" ${{ github.ref }}
+          git branch -c "hermes/curate-$SHORT_SHA"
           git push origin "hermes/curate-$SHORT_SHA"
 
           # Explicitly add to-be-curated metadata (which is ignored via .gitignore!)
