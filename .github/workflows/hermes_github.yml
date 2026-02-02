@@ -98,23 +98,24 @@ jobs:
       - run: echo "TARGET_BRANCH=$(cat .hermes/curate/target_branch)" >> "$GITHUB_ENV"
       # Take target_branch from tag ref if empty
       - run: |
-        if [ -z "$TARGET_BRANCH" ]; then
-            if [ -s .hermes/curate/github_ref ]; then
-                REF="$(tr -d '\r\n' < .hermes/curate/github_ref)"
-                if [ "${REF#refs/tags/}" != "$REF" ]; then
-                    TAG="${REF#refs/tags/}"
-                    if git fetch --force --tags origin; then
-                        if TAG_COMMIT="$(git rev-parse "${TAG}^{commit}" 2>/dev/null)"; then
-                            BRANCH_REF="$(git ls-remote --heads origin | awk -v sha="$TAG_COMMIT" '$1==sha {print $2; exit}')"
-                            if [ -n "$BRANCH_REF" ]; then
-                                BRANCH="${BRANCH_REF#refs/heads/}"
-                                echo "TARGET_BRANCH=$BRANCH" >> "$GITHUB_ENV"
+            # Check if empty
+            if [ -z "$TARGET_BRANCH" ]; then
+                if [ -s .hermes/curate/github_ref ]; then
+                    REF="$(tr -d '\r\n' < .hermes/curate/github_ref)"
+                    if [ "${REF#refs/tags/}" != "$REF" ]; then
+                        TAG="${REF#refs/tags/}"
+                        if git fetch --force --tags origin; then
+                            if TAG_COMMIT="$(git rev-parse "${TAG}^{commit}" 2>/dev/null)"; then
+                                BRANCH_REF="$(git ls-remote --heads origin | awk -v sha="$TAG_COMMIT" '$1==sha {print $2; exit}')"
+                                if [ -n "$BRANCH_REF" ]; then
+                                    BRANCH="${BRANCH_REF#refs/heads/}"
+                                    echo "TARGET_BRANCH=$BRANCH" >> "$GITHUB_ENV"
+                                fi
                             fi
                         fi
                     fi
                 fi
             fi
-        fi
       - uses: peter-evans/create-pull-request@v5
         if: ${{ env.TARGET_BRANCH != '' }}
         with:
